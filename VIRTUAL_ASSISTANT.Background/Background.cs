@@ -3,6 +3,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using System.Threading;
+using VIRTUAL_ASSISTANT.Application.Interfaces.UseCases;
 using VIRTUAL_ASSISTANT.Domain.DTO;
 
 namespace VIRTUAL_ASSISTANT.Background
@@ -37,7 +38,7 @@ namespace VIRTUAL_ASSISTANT.Background
         {
             var cancellationToken = (CancellationToken)state;
             _logger.LogInformation("Executing processing cycle.");
-
+            await ProcessNotifications(cancellationToken);
         }
 
         public async Task ProcessNotifications(CancellationToken cancellationToken)
@@ -47,22 +48,8 @@ namespace VIRTUAL_ASSISTANT.Background
                 _logger.LogInformation("Processing outbox messages.");
                 using (var scope = _serviceProvider.CreateScope())
                 {
-                    var service = scope.ServiceProvider.GetRequiredService<IOutboxPublisher>();
-                    var messagesToPublish = await service.GetMessagesToPublishAsync(cancellationToken);
-
-                    if (messagesToPublish.Any())
-                    {
-                        _logger.LogInformation("{Count} messages found in outbox.", messagesToPublish.Count());
-                        foreach (var message in messagesToPublish)
-                        {
-                            await service.ProcessOutboxAsync(message, cancellationToken);
-                            _logger.LogInformation("Processed message {MessageId}.", message.PersistenceId);
-                        }
-                    }
-                    else
-                    {
-                        _logger.LogInformation("No messages found in outbox.");
-                    }
+                    var service = scope.ServiceProvider.GetRequiredService<IReminderUseCase>();
+                    await service.ReminderProcess(cancellationToken);
                 }
             }
             catch (Exception ex)

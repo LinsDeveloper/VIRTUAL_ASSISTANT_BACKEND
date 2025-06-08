@@ -10,7 +10,8 @@ namespace VIRTUAL_ASSISTANT.Domain.Entities.Integrations.Reminders
     public class UserReminders
     {
         public Guid ReminderId { get; set; }
-        public required User User { get; set; }
+        public User? User { get; set; }
+        public required string Title { get; set; }
         public required string Message {  get; set; }
         public DateTime ReminderTimer { get; set; }
     }

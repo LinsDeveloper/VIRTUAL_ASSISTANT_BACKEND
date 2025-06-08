@@ -8,6 +8,6 @@ namespace VIRTUAL_ASSISTANT.Application.Interfaces.UseCases
 {
     public interface IReminderUseCase
     {
-
+        Task ReminderProcess(CancellationToken cancellationToken);
     }
 }

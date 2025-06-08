@@ -8,6 +8,11 @@
 
   <ItemGroup>
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.4.0" />
+    <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="8.12.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\VIRTUAL_ASSISTANT.Application\VIRTUAL_ASSISTANT.Application.csproj" />
   </ItemGroup>
 
 </Project>
