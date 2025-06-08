@@ -1,0 +1,11 @@
+﻿################################################################################
+# Este arquivo .gitignore foi criado automaticamente pelo Microsoft(R) Visual Studio.
+################################################################################
+
+/.vs
+/VIRTUAL_ASSISTANT.Application/obj
+/VIRTUAL_ASSISTANT.Background/obj
+/VIRTUAL_ASSISTANT.Domain/obj
+/VIRTUAL_ASSISTANT.Infra/obj
+/VIRTUAL_ASSISTANT.IoC/obj
+/VIRTUAL_ASSISTANT_API/obj
