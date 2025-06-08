@@ -6,4 +6,8 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\VIRTUAL_ASSISTANT.Domain\VIRTUAL_ASSISTANT.Domain.csproj" />
+  </ItemGroup>
+
 </Project>
