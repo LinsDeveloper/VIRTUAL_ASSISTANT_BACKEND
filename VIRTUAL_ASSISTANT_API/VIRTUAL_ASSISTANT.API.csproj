@@ -7,12 +7,23 @@
   </PropertyGroup>
 
   <ItemGroup>
+	  <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="8.0.0">
+		  <PrivateAssets>all</PrivateAssets>
+		  <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+	  </PackageReference>
+	  <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="8.0.0">
+		  <PrivateAssets>all</PrivateAssets>
+		  <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+	  </PackageReference>
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.4.0" />
     <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="8.12.0" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\VIRTUAL_ASSISTANT.Application\VIRTUAL_ASSISTANT.Application.csproj" />
+    <ProjectReference Include="..\VIRTUAL_ASSISTANT.Domain\VIRTUAL_ASSISTANT.Domain.csproj" />
+    <ProjectReference Include="..\VIRTUAL_ASSISTANT.Infra\VIRTUAL_ASSISTANT.Infra.csproj" />
+    <ProjectReference Include="..\VIRTUAL_ASSISTANT.IoC\VIRTUAL_ASSISTANT.IoC.csproj" />
   </ItemGroup>
 
 </Project>

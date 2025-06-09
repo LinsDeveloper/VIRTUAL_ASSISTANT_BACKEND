@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using MySql.Data.MySqlClient;
 using System.Data;
 using VIRTUAL_ASSISTANT.Application.Interfaces.Auth;
 using VIRTUAL_ASSISTANT.Application.Interfaces.Providers;
@@ -14,6 +15,7 @@ using VIRTUAL_ASSISTANT.Domain.Interfaces.Cache;
 using VIRTUAL_ASSISTANT.Domain.Interfaces.Repository;
 using VIRTUAL_ASSISTANT.Infra;
 using VIRTUAL_ASSISTANT.Infra.Cache;
+using VIRTUAL_ASSISTANT.Infra.HttpClients;
 using VIRTUAL_ASSISTANT.Infra.Persistence.Repository.Base;
 using VIRTUAL_ASSISTANT.Infra.Persistence.UnitOfWork;
 
@@ -22,14 +24,17 @@ namespace VIRTUAL_ASSISTANT.IoC
     public static class DependenciesExtension
     {
 
-        public static void AddServices(this IServiceCollection services, IConfiguration configuration)
+        public static void AddServices(this IServiceCollection services)
         {
             services.AddScoped<IAuthService, AuthService>();
             services.AddScoped<IJwtService, JwtService>();
             services.AddScoped<IUserContextProvider, HttpUserContextProvider>();
+            services.AddScoped<IHttpClientService, HttpClientService>();
+            services.AddHttpContextAccessor();
+            services.AddHttpClient();
         }
 
-        public static void AddUseCases(this IServiceCollection services, IConfiguration configuration)
+        public static void AddUseCases(this IServiceCollection services)
         {
             services.AddScoped<IUseCases, UserUseCase>();
             services.AddScoped<IReminderUseCase, ReminderUseCase>();
@@ -38,6 +43,13 @@ namespace VIRTUAL_ASSISTANT.IoC
         public static void AddDbContexts(this IServiceCollection services, IConfiguration configuration)
         {
             services.AddScoped<IUnitOfWork, UnitOfWork>();
+
+            services.AddScoped<IDbConnection>(db =>
+            {
+                var connectionString = configuration.GetConnectionString("TmsConnectionString")
+                    ?? throw new InvalidOperationException("ConnectionString não pode ser null!");
+                return new MySqlConnection(connectionString);
+            });
 
             services.AddScoped((provider) =>
             {

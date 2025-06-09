@@ -1,7 +1,10 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using VIRTUAL_ASSISTANT.Application.Arguments.Auth;
+using VIRTUAL_ASSISTANT.Application.DTO.Auth;
 using VIRTUAL_ASSISTANT.Application.Interfaces.Auth;
+using VIRTUAL_ASSISTANT.Application.Interfaces.UseCases;
+using VIRTUAL_ASSISTANT.Domain.Arguments.Users;
 
 namespace VIRTUAL_ASSISTANT.API.Controllers.Auth
 {
@@ -10,11 +13,13 @@ namespace VIRTUAL_ASSISTANT.API.Controllers.Auth
     public class authController : ControllerBase
     {
         private readonly IAuthService _authService;
+        private readonly IUseCases _useCases;
         private readonly JwtOptions _jwtOptions;
-        public authController(IAuthService authService, IOptions<JwtOptions> jwtOptions)
+        public authController(IAuthService authService, IOptions<JwtOptions> jwtOptions, IUseCases useCases)
         {
             _authService = authService;
             _jwtOptions = jwtOptions.Value;
+            _useCases = useCases;
         }
 
         /// <summary>
@@ -29,10 +34,18 @@ namespace VIRTUAL_ASSISTANT.API.Controllers.Auth
             return StatusCode(result.StatusCode, result);
         }
 
-        [HttpPost("spotify-sign")]
-        public async Task<IActionResult> SpotifySignIn()
+        [HttpPost("user-register")]
+        public async Task<IActionResult> IntegrationSignIn(UserRegisterArguments userRegisterArguments)
         {
+            var result = await _useCases.UserRegister(userRegisterArguments);
+            return StatusCode(result.StatusCode, result);
+        }
 
+        [HttpPost("integration-sign-in")]
+        public async Task<IActionResult> IntegrationSignIn(IntegrationSignInDTO integrationSignInDTO)
+        {
+            var result = await _authService.IntegrationSignIn(integrationSignInDTO);
+            return StatusCode(result.StatusCode, result);
         }
     }
 }

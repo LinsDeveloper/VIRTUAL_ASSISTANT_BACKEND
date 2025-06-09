@@ -25,7 +25,7 @@ namespace VIRTUAL_ASSISTANT.Application.UseCases.Users
 
         public async Task<Result<string, string>> UserRegister(UserRegisterArguments userRegisterArguments)
         {
-            var user = _unitOfWork.Repository<User>().FirstOrDefaultAsync(x => x.Email == userRegisterArguments.Email);
+            var user = await _unitOfWork.Repository<User>().FirstOrDefaultAsync(x => x.Email == userRegisterArguments.Email);
             if (user != null)
                 return Result<string, string>.BadRequestResult("Usuário já está cadastrado no sistema");
 
