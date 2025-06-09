@@ -18,7 +18,7 @@ namespace VIRTUAL_ASSISTANT.Application.UseCases.Users
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IHttpClientService _httpClientService;
-        private const string _expoTokenTemporary = "ExponentPushToken[_FtemdG66TDZ3W60GyZ_9Z]";
+        private const string _expoTokenTemporary = "ExponentPushToken[zUPz5VPfGRitcVwPBqCktd]";
         private readonly IUserContextProvider _userContextProvider;
 
         public ReminderUseCase(IUnitOfWork unitOfWork, IHttpClientService httpClientService, IUserContextProvider userContextProvider)
@@ -38,13 +38,14 @@ namespace VIRTUAL_ASSISTANT.Application.UseCases.Users
             userReminders.User = user;
 
             await _unitOfWork.Repository<UserReminders>().CreateAsync(userReminders);
+            await _unitOfWork.CommitAsync();
 
             return Result<string, string>.SuccessResult("Lembrete agendado com sucesso!");
         }
 
         public async Task ReminderProcess(CancellationToken cancellationToken)
         {
-            var reminderPending = await _unitOfWork.Repository<UserReminders>().FindAsync(x => x.ReminderTimer > DateTime.Now);
+            var reminderPending = await _unitOfWork.Repository<UserReminders>().FindAsync(x => x.ReminderTimer < DateTime.UtcNow);
 
             foreach (var reminder in reminderPending)
             {
@@ -58,7 +59,10 @@ namespace VIRTUAL_ASSISTANT.Application.UseCases.Users
                 };
 
                 await _httpClientService.PostAsync<ReminderNotificationDTO, ReminderNotificationResponseDTO>(ConstantsHttpClientServices.EXPO, "/--/api/v2/push/send", notify);
+                _unitOfWork.Repository<UserReminders>().Delete(reminder);
             }
+
+            await _unitOfWork.CommitAsync();
         }
     }
 }

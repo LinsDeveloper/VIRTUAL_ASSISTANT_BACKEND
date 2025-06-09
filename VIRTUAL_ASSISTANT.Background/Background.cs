@@ -15,8 +15,8 @@ namespace VIRTUAL_ASSISTANT.Background
         private readonly ILogger<Background> _logger;
 
         private Timer? _timer;
-        private readonly TimeSpan _outboxInterval = TimeSpan.FromSeconds(20);
-        private readonly TimeSpan _notificationInterval = TimeSpan.FromSeconds(25);
+        private readonly TimeSpan _outboxInterval = TimeSpan.FromSeconds(10);
+        private readonly TimeSpan _notificationInterval = TimeSpan.FromSeconds(10);
         private readonly ConfigRabbitMQ _configRabbitMQ; 
 
         public Background(IServiceProvider serviceProvider, IServiceScopeFactory serviceScopeFactory, ILogger<Background> logger, IOptions<ConfigRabbitMQ> rabbitMqSettings)

@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -39,7 +40,17 @@ namespace VIRTUAL_ASSISTANT.Infra.HttpClients
         public async Task<TResponse> PostAsync<TRequest, TResponse>(string clientName, string endpoint, TRequest body)
         {
             var client = _httpClientFactory.CreateClient(clientName);
-            var content = new StringContent(JsonConvert.SerializeObject(body), Encoding.UTF8, "application/json");
+
+            var settings = new JsonSerializerSettings
+            {
+                ContractResolver = new CamelCasePropertyNamesContractResolver(),
+                NullValueHandling = NullValueHandling.Ignore,
+                DefaultValueHandling = DefaultValueHandling.Ignore
+            };
+
+            var json = JsonConvert.SerializeObject(body, settings);
+            var content = new StringContent(json, Encoding.UTF8, "application/json");
+
             var response = await client.PostAsync(endpoint, content);
 
             if (!response.IsSuccessStatusCode)
@@ -53,5 +64,6 @@ namespace VIRTUAL_ASSISTANT.Infra.HttpClients
             var responseContent = await response.Content.ReadAsStringAsync();
             return JsonConvert.DeserializeObject<TResponse>(responseContent)!;
         }
+
     }
 }

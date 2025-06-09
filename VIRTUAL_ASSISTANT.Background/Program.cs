@@ -3,14 +3,18 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using MySql.Data.MySqlClient;
 using System.Configuration;
 using System.Data;
 using VIRTUAL_ASSISTANT.Application.Interfaces.Providers;
+using VIRTUAL_ASSISTANT.Application.Interfaces.UseCases;
 using VIRTUAL_ASSISTANT.Application.Services.Providers;
+using VIRTUAL_ASSISTANT.Application.UseCases.Users;
 using VIRTUAL_ASSISTANT.Domain.Arguments.Configurations;
 using VIRTUAL_ASSISTANT.Domain.DTO;
 using VIRTUAL_ASSISTANT.Domain.Interfaces;
 using VIRTUAL_ASSISTANT.Infra;
+using VIRTUAL_ASSISTANT.Infra.HttpClients;
 using VIRTUAL_ASSISTANT.Infra.Persistence.UnitOfWork;
 
 namespace VIRTUAL_ASSISTANT.Background
@@ -22,7 +26,7 @@ namespace VIRTUAL_ASSISTANT.Background
             var host = Host.CreateDefaultBuilder(args)
                 .ConfigureAppConfiguration((context, config) =>
                 {
-                    config.AddJsonFile("integration.appsettings.json", optional: false, reloadOnChange: true)
+                    config.AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
                           .AddJsonFile($"appsettings.{context.HostingEnvironment.EnvironmentName}.json", optional: true, reloadOnChange: true)
                           .AddEnvironmentVariables();
 
@@ -34,10 +38,21 @@ namespace VIRTUAL_ASSISTANT.Background
                 })
                 .ConfigureServices((context, services) =>
                 {
-
-                    services.AddScoped<IUserContextProvider, HttpUserContextProvider>();
+                    services.AddHttpClient();
+                    services.AddHostedService<Background>();
+                    services.AddHttpContextAccessor();
+                    services.AddTransient<IUserContextProvider, HttpUserContextProvider>();
+                    services.AddTransient<IReminderUseCase, ReminderUseCase>();
+                    services.AddTransient<IHttpClientService, HttpClientService>();
                     services.AddScoped<IUnitOfWork, UnitOfWork>();
-                    ;
+
+                    services.AddScoped<IDbConnection>(db =>
+                    {
+                        var connectionString = context.Configuration.GetConnectionString("TmsConnectionString")
+                            ?? throw new InvalidOperationException("ConnectionString não pode ser null!");
+                        return new MySqlConnection(connectionString);
+                    });
+
                     services.AddScoped((provider) =>
                     {
                         var connection = provider.GetRequiredService<IDbConnection>();

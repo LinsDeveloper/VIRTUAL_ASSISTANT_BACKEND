@@ -5,6 +5,8 @@ using VIRTUAL_ASSISTANT.Application.DTO.Auth;
 using VIRTUAL_ASSISTANT.Application.Interfaces.Auth;
 using VIRTUAL_ASSISTANT.Application.Interfaces.UseCases;
 using VIRTUAL_ASSISTANT.Domain.Arguments.Users;
+using VIRTUAL_ASSISTANT.Domain.DTO.Notifications;
+using VIRTUAL_ASSISTANT.Domain.Entities.Integrations.Reminders;
 
 namespace VIRTUAL_ASSISTANT.API.Controllers.Auth
 {
@@ -13,13 +15,15 @@ namespace VIRTUAL_ASSISTANT.API.Controllers.Auth
     public class authController : ControllerBase
     {
         private readonly IAuthService _authService;
+        private readonly IReminderUseCase _reminderUseCase;
         private readonly IUseCases _useCases;
         private readonly JwtOptions _jwtOptions;
-        public authController(IAuthService authService, IOptions<JwtOptions> jwtOptions, IUseCases useCases)
+        public authController(IAuthService authService, IOptions<JwtOptions> jwtOptions, IUseCases useCases, IReminderUseCase reminderUseCase)
         {
             _authService = authService;
             _jwtOptions = jwtOptions.Value;
             _useCases = useCases;
+            _reminderUseCase = reminderUseCase;
         }
 
         /// <summary>
@@ -45,6 +49,13 @@ namespace VIRTUAL_ASSISTANT.API.Controllers.Auth
         public async Task<IActionResult> IntegrationSignIn(IntegrationSignInDTO integrationSignInDTO)
         {
             var result = await _authService.IntegrationSignIn(integrationSignInDTO);
+            return StatusCode(result.StatusCode, result);
+        }
+
+        [HttpPost("integration-reminder")]
+        public async Task<IActionResult> IntegrationReminder(UserReminders userReminders)
+        {
+            var result = await _reminderUseCase.ReminderRegister(userReminders);
             return StatusCode(result.StatusCode, result);
         }
     }

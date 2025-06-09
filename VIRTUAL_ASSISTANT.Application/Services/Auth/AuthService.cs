@@ -49,6 +49,8 @@ namespace VIRTUAL_ASSISTANT.Application.Services.Auth
                 Email = user.Email,
                 AccessToken = newAccessToken.Token,
                 ExpirationAccess = newAccessToken.Expiration,
+                Address = user.Address,
+                PhoneNumber = user.PhoneNumber,
             };
 
             return Result<UserSignInResponseArguments, string>.SuccessResult(response);
@@ -72,12 +74,12 @@ namespace VIRTUAL_ASSISTANT.Application.Services.Auth
 
         public async Task AttachSpotify(string token, int userId)
         {
-            await _redisService.SetAsync($"SPOTIFY-{userId}-{token}", token, TimeSpan.FromMinutes(60));
+            await _redisService.SetAsync($"SPOTIFY-{userId}", token, TimeSpan.FromMinutes(60));
         }
 
         public async Task AttachGmail(string token, int userId)
         {
-            await _redisService.SetAsync($"GMAIL-{userId}-{token}", token, TimeSpan.FromMinutes(60));
+            await _redisService.SetAsync($"GMAIL-{userId}", token, TimeSpan.FromMinutes(60));
         }
     }
 }

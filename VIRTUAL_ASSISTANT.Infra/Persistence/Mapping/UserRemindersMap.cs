@@ -25,7 +25,7 @@ namespace VIRTUAL_ASSISTANT.Infra.Persistence.Mapping
                     .IsRequired()
                     .HasColumnName("TITLE")
                     .HasColumnType("VARCHAR")
-                    .HasMaxLength(100);
+                    .HasMaxLength(255);
 
             builder.Property(x => x.ReminderTimer)
                     .IsRequired()
@@ -36,7 +36,7 @@ namespace VIRTUAL_ASSISTANT.Infra.Persistence.Mapping
                     .IsRequired()
                     .HasColumnName("MESSAGE")
                     .HasColumnType("VARCHAR")
-                    .HasMaxLength(100);
+                    .HasMaxLength(255);
 
         }
     }
