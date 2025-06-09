@@ -12,6 +12,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\VIRTUAL_ASSISTANT.Application\VIRTUAL_ASSISTANT.Application.csproj" />
     <ProjectReference Include="..\VIRTUAL_ASSISTANT.Infra\VIRTUAL_ASSISTANT.Infra.csproj" />
   </ItemGroup>
 

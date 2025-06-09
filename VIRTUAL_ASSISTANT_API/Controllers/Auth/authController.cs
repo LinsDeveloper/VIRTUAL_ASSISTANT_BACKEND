@@ -28,5 +28,11 @@ namespace VIRTUAL_ASSISTANT.API.Controllers.Auth
             var result = await _authService.SignIn(userLogin);
             return StatusCode(result.StatusCode, result);
         }
+
+        [HttpPost("spotify-sign")]
+        public async Task<IActionResult> SpotifySignIn()
+        {
+
+        }
     }
 }

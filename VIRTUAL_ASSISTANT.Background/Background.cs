@@ -19,7 +19,7 @@ namespace VIRTUAL_ASSISTANT.Background
         private readonly TimeSpan _notificationInterval = TimeSpan.FromSeconds(25);
         private readonly ConfigRabbitMQ _configRabbitMQ; 
 
-        public Background(IServiceProvider serviceProvider, IServiceScopeFactory serviceScopeFactory, ILogger<Background> logger, , IOptions<ConfigRabbitMQ> rabbitMqSettings)
+        public Background(IServiceProvider serviceProvider, IServiceScopeFactory serviceScopeFactory, ILogger<Background> logger, IOptions<ConfigRabbitMQ> rabbitMqSettings)
         {
             _serviceProvider = serviceProvider;
             _serviceScopeFactory = serviceScopeFactory;

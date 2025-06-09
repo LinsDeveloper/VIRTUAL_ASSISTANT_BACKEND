@@ -8,12 +8,14 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.0" />
     <PackageReference Include="Microsoft.Extensions.Hosting" Version="8.0.0" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\VIRTUAL_ASSISTANT.Application\VIRTUAL_ASSISTANT.Application.csproj" />
     <ProjectReference Include="..\VIRTUAL_ASSISTANT.Domain\VIRTUAL_ASSISTANT.Domain.csproj" />
+    <ProjectReference Include="..\VIRTUAL_ASSISTANT.Infra\VIRTUAL_ASSISTANT.Infra.csproj" />
   </ItemGroup>
 
 </Project>

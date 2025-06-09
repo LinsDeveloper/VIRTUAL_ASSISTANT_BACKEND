@@ -15,8 +15,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VIRTUAL_ASSISTANT.Infra", "
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VIRTUAL_ASSISTANT.Application", "VIRTUAL_ASSISTANT.Application\VIRTUAL_ASSISTANT.Application.csproj", "{9C3CB5DE-1A19-48C6-BA88-3341BE6A8A69}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VIRTUAL_ASSISTANT.Worker", "VIRTUAL_ASSISTANT.Worker\VIRTUAL_ASSISTANT.Worker.csproj", "{071B7A9F-CC10-4CBC-B979-C226FC353006}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -47,10 +45,6 @@ Global
 		{9C3CB5DE-1A19-48C6-BA88-3341BE6A8A69}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9C3CB5DE-1A19-48C6-BA88-3341BE6A8A69}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9C3CB5DE-1A19-48C6-BA88-3341BE6A8A69}.Release|Any CPU.Build.0 = Release|Any CPU
-		{071B7A9F-CC10-4CBC-B979-C226FC353006}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{071B7A9F-CC10-4CBC-B979-C226FC353006}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{071B7A9F-CC10-4CBC-B979-C226FC353006}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{071B7A9F-CC10-4CBC-B979-C226FC353006}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
